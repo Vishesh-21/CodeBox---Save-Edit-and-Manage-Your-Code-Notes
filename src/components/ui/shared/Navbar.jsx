@@ -7,7 +7,7 @@ export default function Navbar() {
     <div className="sticky z-10 top-0 bg-background py-6">
       <nav className="flex items-center justify-between">
         <Link href={"/"}>
-          <h1 className="text-4xl font-semibold">
+          <h1 className="text-4xl font-bold">
             <span className="text-primary">S</span>nippet
             <span className="text-primary">B</span>ox
           </h1>
