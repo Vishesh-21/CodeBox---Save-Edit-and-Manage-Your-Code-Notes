@@ -11,8 +11,6 @@ export default async function Home() {
 
  snippets.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  if(!snippets) return <h1 className="text-center text-3xl font-semibold opacity-65">No Snippets created yet...</h1>
-
   return (
     <div className="mt-4 px-6">
       <div className="flex items-center justify-between">
@@ -20,7 +18,8 @@ export default async function Home() {
         <Link href={'/snippet/new'}><Button className="">Add <CirclePlus /></Button></Link>
       </div>
         <div className="mt-4">
-          <Table>
+          {
+           ( snippets && snippets.length > 0) ?           <Table>
             <TableCaption>A list of all snippets created so far.</TableCaption>
             <TableHeader>
               <TableRow>
@@ -42,7 +41,8 @@ export default async function Home() {
                 })
               }
             </TableBody>
-          </Table>
+          </Table> : <h1 className="text-4xl font-bold opacity-40 text-center mt-20">No, Code snippet created yet...</h1>
+          }
         </div>
       </div>
   );

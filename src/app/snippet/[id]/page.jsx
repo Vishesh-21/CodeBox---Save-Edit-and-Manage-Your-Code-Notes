@@ -1,6 +1,7 @@
+import { deleteSnippet } from "@/actions";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
-import { Copy, Pencil, Trash2 } from "lucide-react";
+import { Dot, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -9,10 +10,20 @@ export default async function page({ params }) {
 
   const snippet = await prisma.snippet.findUnique({ where: { id } });
 
+  if (!snippet)
+    return (
+      <h1 className="text-3xl fond-bold opacity-65 text-center">
+        No, Snippet found... try later
+      </h1>
+    );
+
+  const deleteSnippetAction = deleteSnippet.bind(null, snippet.id);
+
   return (
     <div className="px-12">
-      <h1 className="text-lg font-semibold   border-b-[1.5px] py-2">
-        {(snippet?.title).charAt(0).toUpperCase()+(snippet?.title).slice(1)}
+      <h1 className="text-lg border-b-[1.5px]">
+        <Dot className="inline leading-2 text-primary" size={40} />
+        {(snippet?.title).charAt(0).toUpperCase() + (snippet?.title).slice(1)}
       </h1>
       <div className="relative mx-3 mt-3 rounded p-6 bg-slate-700">
         <pre>
@@ -24,11 +35,11 @@ export default async function page({ params }) {
               <Pencil size={12} />
             </Button>
           </Link>
-          <Link href={"#"}>
+          <form action={deleteSnippetAction} className="inline">
             <Button className="text-[0.75rem] ml-1" variant="destructive">
               <Trash2 size={12} />
             </Button>
-          </Link>
+          </form>
         </div>
       </div>
     </div>
