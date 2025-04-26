@@ -1,39 +1,66 @@
+"use client";
+
+import { createSnippet } from "@/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { prisma } from "@/lib/prisma";
-import { Plus } from "lucide-react";
-import { redirect } from "next/navigation";
-import React from "react";
+import { Brain, Plus } from "lucide-react";
+import React, { useState } from "react";
 
 export default function NewSnippet() {
-  async function createSnippet(formData) {
-    "use server";
-    const title = formData.get("title");
-    const code = formData.get("code");
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [code, setCode] = useState("");
 
-    const snippet = await prisma.snippet.create({
-      data: { title, code, date: new Date() },
-    });
-    redirect("/");
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    setLoading(true);
+
+    const formData = new FormData(event.target);
+    await createSnippet(formData);
+
+    setLoading(false);
   }
 
   return (
     <div className="px-24 mt-4">
-      <form className="flex flex-col gap-4" action={createSnippet}>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <Label htmlFor="title">Title</Label>
-        <Input placeholder="Title of your snippet..." id="title" name="title" />
+        <div className="flex gap-5">
+          <Input
+            required
+            placeholder="Title of your snippet..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            id="title"
+            name="title"
+          />
+          <Button type="button">
+            <Brain /> AI
+          </Button>
+        </div>
+
         <Label htmlFor="code">Code</Label>
         <Textarea
           id="code"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
           className="h-52"
-          placeholder="Code to be store..."
+          required
+          placeholder="Code to be stored..."
           name="code"
         />
-        <Button type="submit" className="self-end">
-          <Plus />
-          new snippet
+
+        <Button type="submit" className="self-end" disabled={loading}>
+          {loading ? (
+            "Saving..."
+          ) : (
+            <>
+              <Plus /> New Snippet
+            </>
+          )}
         </Button>
       </form>
     </div>
