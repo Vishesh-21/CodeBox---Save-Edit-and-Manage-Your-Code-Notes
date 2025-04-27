@@ -31,7 +31,8 @@ Built using **Next.js 13+ (App Router)**, **Prisma ORM**, and **SQLite**.
 
 ### 1. Clone the repository
 
-git clone https://github.com/your-username/codebox.git
+git clone https://github.com/Vishesh-21/CodeBox---Save-Edit-and-Manage-Your-Code-Notes
+
 cd codebox
 
 ### 2. Clone the repository
